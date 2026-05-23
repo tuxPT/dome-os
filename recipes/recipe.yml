@@ -37,6 +37,7 @@ modules:
         - dove
         - dangerzone
         - brave-browser
+        - dnscrypt-proxy
 
   - type: default-flatpaks
     configurations:
@@ -50,5 +51,9 @@ modules:
           - io.github.DenysMb.Kontainer
           - it.mijorus.gearlever
       - scope: user # Also add Flathub user repo, but no user packages
+
+  - type: script
+    snippets:
+      - "ln -s /var/run/systemd/resolve/resolv.conf /etc/resolv.conf"
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
