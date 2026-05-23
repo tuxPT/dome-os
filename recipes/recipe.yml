@@ -9,6 +9,9 @@ description: This is my personal OS image.
 base-image: ghcr.io/ublue-os/aurora-dx
 image-version: stable # latest is also supported if you want new updates ASAP
 
+platforms:
+  - linux/amd64/v2
+
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
@@ -19,18 +22,21 @@ modules:
 
   - type: dnf
     repos:
+      files:
+        - https://packages.freedom.press/yum-tools-prod/dangerzone/dangerzone.repo
+        - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
       copr:
-        - atim/starship
+        - celenity/copr
+        
     install:
       packages:
-        - micro
-        - starship
-    remove:
-      packages:
-        # example: removing firefox (in favor of the flatpak)
-        # "firefox" is the main package, "firefox-langpacks" is a dependency
         - firefox
-        - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+        - firefox-langpacks
+        - phoenix
+        - thunderbird
+        - dove
+        - dangerzone
+        - brave
 
   - type: default-flatpaks
     configurations:
@@ -38,8 +44,11 @@ modules:
         scope: system
         # If no repo information is specified, Flathub will be used by default
         install: # system flatpaks we want all users to have and not remove
-          - org.mozilla.firefox
-          - org.gnome.Loupe
+          - com.github.wwmm.easyeffects
+          - com.github.tchx84.Flatseal
+          - io.podman_desktop.PodmanDesktop
+          - io.github.DenysMb.Kontainer
+          - it.mijorus.gearlever
       - scope: user # Also add Flathub user repo, but no user packages
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
